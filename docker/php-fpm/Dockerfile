@@ -17,7 +17,8 @@ RUN docker-php-ext-install \
     xml \
     pdo_pgsql
 
-RUN pecl install xdebug \
-    docker-php-ext-enable xdebug
+RUN pecl install -o -f xdebug redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable xdebug redis
 
 WORKDIR /app

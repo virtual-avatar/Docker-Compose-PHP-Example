@@ -16,6 +16,7 @@ services:
     container_name: php-fpm.${APP_NAME}
     depends_on:
       - postgres
+      - redis
     volumes:
       - ./docker/php-fpm/config/php.ini:/usr/local/etc/php/php.ini
       - .:/app
@@ -28,4 +29,11 @@ services:
       - ./docker/postgres/config/localhost.conf:/etc/postgresql/postgresql.conf
     command: postgres -c 'config_file=/etc/postgresql/postgresql.conf'
     ports:
-      - '${POSTGRES_PORT}:${POSTGRES_PORT}' # if postgres is running locally
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+  redis:
+    build: docker/redis
+    container_name: redis.${APP_NAME}
+    volumes:
+      - ./docker/redis/data:/data
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
